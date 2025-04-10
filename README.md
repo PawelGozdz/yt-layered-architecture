@@ -121,9 +121,6 @@ npm test
 
 # Run tests with watch mode
 npm run test:watch
-
-# Run tests with coverage
-npm run test:coverage
 ```
 
 ### Code Quality

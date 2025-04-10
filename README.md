@@ -14,9 +14,10 @@ This project implements the same application using four different architectural 
 
 ```
 traditional-layered/
-├── presentation/    # UI, Controllers, DTOs
-├── business/        # Business logic, Services
-└── data-access/     # Data access, Repositories
+├── presentation/    # UI, controllers, views, DTOs
+├── business/        # Business logic, services
+├── data-access/     # Data access layer, repositories
+└── domain/          # Domain models
 ```
 
 - **Key characteristics**: Top-down dependency flow, separation by technical concerns
@@ -25,10 +26,10 @@ traditional-layered/
 
 ```
 clean-architecture/
-├── entities/              # Enterprise business rules
-├── use-cases/             # Application-specific business rules
-├── interfaces/            # Adapters and ports interfaces
-└── frameworks/            # Frameworks, drivers, external systems
+├── entities/        # Enterprise business rules
+├── use-cases/       # Application business rules
+├── adapters/        # Interface adapters (controllers, presenters, gateways)
+└── frameworks/      # Frameworks and drivers (web, DB, devices)
 ```
 
 - **Key characteristics**: Dependency rule (dependencies point inward), enterprise business rules at the center
@@ -37,10 +38,14 @@ clean-architecture/
 
 ```
 onion-architecture/
-├── domain/                # Domain models and logic
-├── domain-services/       # Domain-specific services
-├── application-services/  # Application services, orchestration
-└── infrastructure/        # Technical implementations
+├── domain/              # Domain model (entities, value objects)
+│   ├── models/          # Core domain entities
+│   └── services/        # Domain services
+├── domain-services/     # Services that operate on domain models
+├── application-services/# Orchestration of domain services
+└── infrastructure/      # External dependencies implementation
+    ├── persistence/     # Data access implementation
+    └── ui/              # User interface implementation
 ```
 
 - **Key characteristics**: Domain at the center, layers depend inward
@@ -49,13 +54,14 @@ onion-architecture/
 
 ```
 hexagonal-architecture/
-├── domain/         # Core domain logic
-├── ports/          # Interfaces the application exposes and requires
-│   ├── primary/    # Inbound ports (use cases)
-│   └── secondary/  # Outbound ports (services application needs)
-└── adapters/       # Implementations of ports
-    ├── primary/    # Inbound adapters (controllers, handlers)
-    └── secondary/  # Outbound adapters (repositories, services)
+├── domain/          # Core business logic
+│   ├── model/       # Domain models
+│   └── ports/       # Interfaces defining ports
+│       ├── incoming/# Primary/driving ports (use cases)
+│       └── outgoing/# Secondary/driven ports (repositories, notifications)
+└── adapters/        # Implementations of ports
+    ├── primary/     # Driving adapters (REST, GraphQL, CLI)
+    └── secondary/   # Driven adapters (DB, external services)
 ```
 
 - **Key characteristics**: Domain at the center, ports define interfaces, adapters implement them
@@ -66,21 +72,51 @@ hexagonal-architecture/
 notekeeper/
 │
 ├── src/
-│   ├── common/                  # Shared components, models, interfaces
-│   │   ├── models/              # Base data models
+│   ├── common/                  # Shared utilities and interfaces
 │   │   └── interfaces/          # Shared interfaces
 │   │
-│   ├── traditional-layered/     # Traditional layered implementation
+│   ├── database/                # Centralized database infrastructure
+│   │   ├── postgres/            # PostgreSQL specific code
+│   │   │   └──migrations/      # PostgreSQL migrations
+│   │   │
+│   │   ├── mongodb/             # MongoDB specific code
+│   │   │   └── migrations/      # Mongodb migrations
 │   │
-│   ├── clean-architecture/      # Clean Architecture implementation
+│   ├── traditional-layered/     # Traditional N-tier architecture
+│   │   ├── presentation/        # UI, controllers, views, DTOs
+│   │   ├── business/            # Business logic, services
+│   │   ├── data-access/         # Data access layer, repositories
+│   │   └── domain/              # Domain models
 │   │
-│   ├── onion-architecture/      # Onion Architecture implementation
+│   ├── clean-architecture/      # Clean Architecture (Uncle Bob)
+│   │   ├── entities/            # Enterprise business rules
+│   │   ├── use-cases/           # Application business rules
+│   │   ├── adapters/            # Interface adapters (controllers, presenters, gateways)
+│   │   └── frameworks/          # Frameworks and drivers (web, DB, devices)
 │   │
-│   └── hexagonal-architecture/  # Hexagonal Architecture implementation
+│   ├── onion-architecture/      # Onion Architecture (Jeffrey Palermo)
+│   │   ├── domain/              # Domain model (entities, value objects)
+│   │   │   ├── models/          # Core domain entities
+│   │   │   └── services/        # Domain services
+│   │   ├── domain-services/     # Services that operate on domain models
+│   │   ├── application-services/# Orchestration of domain services
+│   │   └── infrastructure/      # External dependencies implementation
+│   │       ├── persistence/     # Data access implementation
+│   │       └── ui/              # User interface implementation
+│   │
+│   └── hexagonal-architecture/  # Hexagonal/Ports & Adapters (Alistair Cockburn)
+│       ├── domain/              # Core business logic
+│       │   ├── model/           # Domain models
+│       │   └── ports/           # Interfaces defining ports
+│       │       ├── incoming/    # Primary/driving ports (use cases)
+│       │       └── outgoing/    # Secondary/driven ports (repositories, notifications)
+│       └── adapters/            # Implementations of ports
+│           ├── primary/         # Driving adapters (REST, GraphQL, CLI)
+│           └── secondary/       # Driven adapters (DB, external services)
 │
-├── tests/                       # Tests for all implementations
-│   ├── unit/                    # Unit tests
-│   └── integration/             # Integration tests
+├── config/                      # Centralized configuration
+│   ├── database.ts              # Database configuration
+│   └── app.ts                   # Application configuration
 │
 └── docs/                        # Documentation and diagrams
 ```
@@ -89,8 +125,8 @@ notekeeper/
 
 ### Prerequisites
 
-- Node.js (v16+)
-- npm or yarn
+- Node.js (v22.5+)
+- npm
 
 ### Installation
 
@@ -161,6 +197,12 @@ npm run fix
 ┌────────────────────┐
 │  Data Access       │
 │  (Repositories)    │
+└─────────┬──────────┘
+          │ depends on
+          ▼
+┌────────────────────┐
+│  Domain            │
+│  (Models)          │
 └────────────────────┘
 ```
 

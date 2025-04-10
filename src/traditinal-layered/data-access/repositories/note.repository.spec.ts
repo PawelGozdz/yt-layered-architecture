@@ -82,7 +82,9 @@ describe('Traditional Layered - NoteRepository', () => {
     expect(updatedNote?.title).toBe(updateData.title);
     expect(updatedNote?.content).toBe(updateData.content);
     expect(updatedNote?.createdAt).toEqual(createdNote.createdAt);
-    expect(updatedNote?.updatedAt.getTime()).toBeGreaterThanOrEqual(createdNote.updatedAt.getTime());
+    expect(updatedNote?.updatedAt.getTime()).toBeGreaterThanOrEqual(
+      createdNote.updatedAt.getTime(),
+    );
   });
 
   it('should delete a note', async () => {

@@ -22,9 +22,6 @@ Unstructured code, often referred to as "spaghetti code," is characterized by:
 
 ![](../static/clean.png)
 
-```markdown
-![](../static/clean.png)
-```
 - Business logic mixed with database access code
 - Scattered data validation
 - Presentation logic intertwined with business logic
@@ -32,7 +29,7 @@ Unstructured code, often referred to as "spaghetti code," is characterized by:
 
 These issues lead to several significant challenges:
 
-![](/static/Pasted image 20250410121857.png)
+![](/static/20250410121857.png)
 
 1. **Risky Changes**: Modifications affect multiple aspects of the application simultaneously
 2. **Testing Difficulties**: Unit testing becomes nearly impossible
@@ -57,7 +54,7 @@ Layered architecture organizes code into clearly separated layers, each with spe
 
 ### Typical Layers
 
-![](/static/Pasted image 20250410121942.png)
+![](/static/20250410121942.png)
 
 1. **Presentation Layer**: Handles user interaction (UI, API endpoints)
 2. **Application Layer**: Orchestrates data flow and implements use cases
@@ -68,7 +65,7 @@ Layered architecture organizes code into clearly separated layers, each with spe
 
 A fundamental principle of layered architecture is the direction of dependencies - higher layers depend on lower layers, never the opposite. This ensures that changes in external layers (e.g., infrastructure) don't affect internal layers (e.g., domain).
 
-![](/static/Pasted image 20250418183939.png)
+![](/static/20250418183939.png)
 
 This principle forms the foundation for all variants of layered architecture discussed in this series.
 
@@ -159,7 +156,7 @@ describe('CustomersService', () => {
 
 ## Trade-offs
 
-![](/static/Pasted image 20250410123651.png)
+![](/static/20250410123651.png)
 
 As with any architectural approach, layered architecture involves certain trade-offs:
 

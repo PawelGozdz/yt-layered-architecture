@@ -20,8 +20,11 @@ This document provides a comprehensive introduction to layered architecture appr
 
 Unstructured code, often referred to as "spaghetti code," is characterized by:
 
-![](../static/Pasted%20image2020250410121730.png)
+![](../static/clean.png)
 
+```markdown
+![](../static/clean.png)
+```
 - Business logic mixed with database access code
 - Scattered data validation
 - Presentation logic intertwined with business logic
